@@ -1,25 +1,17 @@
-import assert from 'assert'
+const { defineConfig } = require('cypress');
+const { addCucumberPreprocessorPlugin } = require('@cypress/cucumber-preprocessor');
 
-class RegisterForm {
-  
-  typeTitle(text) {
-    if (!text) return;
-    this.elements.titleInput().type(text)
-  }
+module.exports = defineConfig({
+  e2e: {
+    setupNodeEvents(on, config) {
+      // Implementa o plugin do Cucumber
+      addCucumberPreprocessorPlugin(on, config);
+      return config;
+    },
+    specPattern: 'cypress/e2e/**/*.app.feature',
+  },
+});
 
-  typeUrl(text) {
-    if (!text) return;
-    this.elements.imageUrlInput().type(text)
-  }
-  clickSubmit() {
-    this.elements.submitBtn().click()
-  }
-}
-const registerForm = new RegisterForm()
-const colors = {
-  errors: 'rgb(220, 53, 69)',
-  success: ''
-}
 describe('Validar produtos no carrinho', () => {
   beforeEach(() => {
     cy.visit('https://advantageonlineshopping.com/#/')
